@@ -18,23 +18,15 @@ public class Personaje extends ObjetoJuego{
 		else pos.setPosY(pos.getPosY() + Y);}
 }	
 
+public class Jugador extends Personaje{
+	public Jugador() {}}
 
-//private String nombre; 
-//private Posicion pos; 
-
-// ---- GETTERS Y SETTERS -----
-//public void setNombre(String nombre) {this.nombre = nombre;}
-//public String getNombre() { return nombre; } 
-//public void setPos(Posicion pos) { this.pos = pos; }
-//public Posicion getPos() { return pos; }
-
-// ---- FUNCIONES --------------
-//public void movY(int X) { 
-//	if (this.pos.getPosX() == 0 || this.pos.getPosX() == Habitacion.ANCHO ){ this.pos.setPosX(this.pos.getPosX());	}
-//	else this.pos.setPosX(this.pos.getPosX() + X );}
-
-//public void movX(int Y) { 
-//	if (this.pos.getPosY() == 0 || this.pos.getPosY() == Habitacion.ALTO ){ this.pos.setPosY(this.pos.getPosY());	}
-//	else this.pos.setPosY(this.pos.getPosY() + Y);}
+public class Hadron extends Personaje{
+	private boolean visible=true;
+	public Hadron() {}
+	public boolean cambio_visible() {
+		if(visible) visible=false;
+		else visible=true;
+		return this.visible;}}
 
 
