@@ -118,25 +118,14 @@ void ejercicio11(){
 	char origen[] = "Paco tiene un coche amarillo"; char copia[30];
 	str_cpy(copia, origen); printf("\n [*] Frase copiada -> %s; %d \n", copia, str_cmp(copia, origen));}
 
-// Utilizar librerias propias:
-// Tenemos la libreria creada gestorbuffer.c
-//#define ALLOCSIZE 1000000
-//static char allocbuff[ALLOCSIZE]; // ALLOCSIZE es el final el buffer o sea  allocbuff[1000000] de tamaño.
-//static char *allocp = allocbuff; // *allocp apunta al principio de allocbuff.
-//char * alloc(int n){ // Devuelve un puntero char a una reserva de tamaño "n"
-//    if (allocbuff + ALLOCSIZE) - allocp >n ){ // si el espacio disponible es mayor que lo que solicito
-//        allocp += n; return allocp - n;}  // actualiza el puntero de espacio libre (con menos obviamente)
-//    else return 0;}
-//void afree(char *p){
-//    if (p >= allocbuff && p < allocbuff + ALLOCSIZE) allocp = p; } // liberar la memoaria.
-
-// Que luego se define en gestorbuffer.h
-// #define ALLOCSIZE 1000000
-// char * alloc(int n);
-// char afree(char *p);
-
-// Y en el programa.c se puede meter con #include "gestorbuffer.h" y se pueden usar sus funciones pues.
-// Luego se tienen que compilar todo en un solo programa -> gcc programa.c gestorbuffer.c -o programa
+void ejercicio12(){
+    struct punto{ int x; int y;}; // EL objeto de clase punto recibe dos numeros
+    struct recta{ struct punto pt1; struct punto pt2;}; // El objeto de clase recta recibe dos puntos    
+    struct punto makepoint(int x, int y){ struct punto this; this.x=x; this.y=y; return this;}; // Creador de puntos
+    struct punto p; struct recta r; // Constructor que crea objetos de esas clases
+    p.x=0; p.y=0; // Esto hace de setter. Le da esos atributos
+    r.pt1=makepoint(0,0);  r.pt2=makepoint(1,15); // A la recta le damos dos puntos con el creador de puntos
+    printf("Segunda coordenada x de la recta r -> %d\n", r.pt2.x);} // Y aqui de getter recibimos el valor.
 
 int main (){
 //	ejercicio1();
@@ -148,5 +137,6 @@ int main (){
 //	ejercicio8();
 //	ejercicio9();
 //	ejercicio10();
-	ejercicio11();
+//	ejercicio11();
+	ejercicio12();
     return(0);}
