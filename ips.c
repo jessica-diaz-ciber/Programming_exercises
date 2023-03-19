@@ -3,6 +3,8 @@
 #include <string.h>
 #include <math.h>
 
+// compilar gcc: añadir -lm: gcc ips.c -o ips -lm
+
 int main(){
     void calc(int index, int octet, int mask, int baits[], int ip[]){
     int diff; int rangos; int interval; int net; int broad; int hosts;
