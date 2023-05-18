@@ -111,3 +111,8 @@ _start:
     syscall; Realizar la llamada al sistema
 ```
 La diferencia con el anterior esque hemos intercambiado los registros RSI y RDX.
+En algunos casos, el orden de los registros puede no ser estrictamente necesario siempre y cuando los argumentos 
+correctos se pasen a las ubicaciones correctas de memoria o registros. Esto puede depender del sistema operativo 
+y la arquitectura específica en la que se esté ejecutando el código.
+
+Aun asi mejor seguir la convencion estandar -> rdi, rsi, rdx
