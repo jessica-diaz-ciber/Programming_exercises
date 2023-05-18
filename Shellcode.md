@@ -110,10 +110,4 @@ _start:
     add rax, 59; Cargar el número de la llamada al sistema de execve en rax (59)
     syscall; Realizar la llamada al sistema
 ```
-
-La razón por la que esto funciona es que la llamada al sistema execve toma los siguientes argumentos en los registros:
-
-- rax: El número de la llamada al sistema.
-- rdi: El primer argumento (en este caso, la dirección de la cadena /bin//sh).
-- rsi: El segundo argumento (en este caso, NULL).
-- rdx: El tercer argumento (en este caso, NULL).
+La diferencia con el anterior esque hemos intercambiado los registros RSI y RDX.
