@@ -140,6 +140,26 @@ df4 = df[['LaunchSite', 'Class']]; df4.groupby(['LaunchSite','Class']).size() # 
 	porcentaje_exito_por_sitio = validos / totales # porcentaje de exito por sitio
 porcentaje_exito_por_sitio
 ```
+Si vemos las 5 primeras entradas de df4 vemos que estas dos columnas LaunchSite y Class
+```
+LaunchSite    Class
+CCSFS SLC 40  0        23
+              1        70
+KSC LC 39A    0         5
+              1        44
+VAFB SLC 4E   0         3
+              1        23
+```
+Y el haber claculado el porcentaje de exito nos muestra que:
+
+|LaunchSite|
+|----------|
+|CCSFS SLC 40    0.752688|
+|KSC LC 39A      0.897959|
+|VAFB SLC 4E     0.884615|
+
+El sitio con mas tasa de exito es por tanto 'KSC LC 39A'
+
 --------------------------
 
 ## DATA VISUALIZATION
