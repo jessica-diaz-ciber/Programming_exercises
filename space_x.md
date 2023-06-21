@@ -107,6 +107,26 @@ bad_outcomes = set(filter(lambda key: 'False' in key or 'None' in key, landing_o
 df['Class'] = df["LandingOutcome"].apply(lambda x: 0 if x in bad_outcomes else 1).tolist() # 0 si mal, uno si bien
 df.to_csv('dataset_part_2.csv', index=False) # Exportar todo a un csv final
 ```
+
+Las 10 primeras columans del CSV (dataset_part_2.csv) parecen
+
+|FlightNumber|Date      |BoosterVersion|PayloadMass      |Payload                  |Orbit|LaunchSite  |LandingOutcome|Flights|GridFins|Reused|Legs |LandingPad|Block|Customers |Mission_Outcome|ReusedCount|Serial|Longitude  |Latitude  |Class|
+|------------|----------|--------------|-----------------|-------------------------|-----|------------|--------------|-------|--------|------|-----|----------|-----|----------|---------------|-----------|------|-----------|----------|-----|
+|1           |2010-06-04|Falcon 9      |8191.079109589042|Dragon Qualification Unit|LEO  |CCSFS SLC 40|None None     |1      |False   |False |False|          |1.0  |SpaceX    |True           |0          |B0003 |-80.577366 |28.5618571|0    |
+|2           |2012-05-22|Falcon 9      |525.0            |COTS Demo Flight 2       |LEO  |CCSFS SLC 40|None None     |1      |False   |False |False|          |1.0  |NASA(COTS)|True           |0          |B0005 |-80.577366 |28.5618571|0    |
+|3           |2013-03-01|Falcon 9      |677.0            |CRS-2                    |ISS  |CCSFS SLC 40|None None     |1      |False   |False |False|          |1.0  |NASA (CRS)|True           |0          |B0007 |-80.577366 |28.5618571|0    |
+|4           |2013-09-29|Falcon 9      |500.0            |CASSIOPE                 |PO   |VAFB SLC 4E |False Ocean   |1      |False   |False |False|          |1.0  |MDA       |True           |0          |B1003 |-120.610829|34.632093 |0    |
+|5           |2013-12-03|Falcon 9      |3170.0           |SES-8                    |GTO  |CCSFS SLC 40|None None     |1      |False   |False |False|          |1.0  |SES       |True           |0          |B1004 |-80.577366 |28.5618571|0    |
+|6           |2014-01-06|Falcon 9      |3325.0           |Thaicom 6                |GTO  |CCSFS SLC 40|None None     |1      |False   |False |False|          |1.0  |Thaicom   |True           |0          |B1005 |-80.577366 |28.5618571|0    |
+|7           |2014-04-18|Falcon 9      |2296.0           |CRS-3                    |ISS  |CCSFS SLC 40|True Ocean    |1      |False   |False |True |          |1.0  |NASA (CRS)|True           |0          |B1006 |-80.577366 |28.5618571|1    |
+|8           |2014-07-14|Falcon 9      |1316.0           |Orbcomm-OG2-M1           |LEO  |CCSFS SLC 40|True Ocean    |1      |False   |False |True |          |1.0  |Orbcomm   |True           |0          |B1007 |-80.577366 |28.5618571|1    |
+|9           |2014-08-05|Falcon 9      |4535.0           |AsiaSat 8                |GTO  |CCSFS SLC 40|None None     |1      |False   |False |False|          |1.0  |AsiaSat   |True           |0          |B1008 |-80.577366 |28.5618571|0    |
+|10          |2014-09-07|Falcon 9      |4428.0           |AsiaSat 6                |GTO  |CCSFS SLC 40|None None     |1      |False   |False |False|          |1.0  |AsiaSat   |True           |0          |B1011 |-80.577366 |28.5618571|0    |
+
+
+
+
+
 Vemos con graficas los datos estrcturados de manera que nos diga donde tienen mas tasa de exito los aterrizajes
 ```python
 df2 = df[['Orbit', 'LandingOutcome']]; df2.groupby(['Orbit', 'LandingOutcome']).size() # Df de las orbitas
