@@ -152,11 +152,11 @@ VAFB SLC 4E   0         3
 ```
 Y el haber claculado el porcentaje de exito nos muestra que:
 
-|LaunchSite|
-|----------|
-|CCSFS SLC 40    0.752688|
-|KSC LC 39A      0.897959|
-|VAFB SLC 4E     0.884615|
+|LaunchSite| Exito |
+|----------| ------ | 
+|CCSFS SLC 40  |  0.752688|
+|KSC LC 39A    |  0.897959|
+|VAFB SLC 4E   |  0.884615|
 
 El sitio con mas tasa de exito es por tanto 'KSC LC 39A'
 
